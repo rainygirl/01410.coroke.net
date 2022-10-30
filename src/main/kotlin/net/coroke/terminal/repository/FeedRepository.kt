@@ -19,6 +19,12 @@ interface FeedRepository : JpaRepository<Feed, Long> {
     @Query("SELECT MAX(aliasId) FROM Feed WHERE boardId = :boardId")
     fun findMaxAliasIdByBoardId(boardId: String): Int?
 
+    @Query("SELECT MAX(aliasId) FROM Feed WHERE boardId = :boardId AND aliasId < :aliasId")
+    fun findBackwardAliasIdByAliasIdAndBoardId(boardId: String, aliasId: Int): Int?
+
+    @Query("SELECT MIN(aliasId) FROM Feed WHERE boardId = :boardId AND aliasId > :aliasId")
+    fun findForwardAliasIdByAliasIdAndBoardId(boardId: String, aliasId: Int): Int?
+
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Feed SET hit = hit + 1 WHERE boardId = :boardId AND aliasId = :aliasId")
     fun hitFeedByBoardIdAndAliasId(boardId: String, aliasId: Int)

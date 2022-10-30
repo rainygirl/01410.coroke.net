@@ -211,8 +211,13 @@ audio {
     }
 
     .status {
+        width: 100%;
         height: 12px;
         line-height: 12px;
+    }
+
+    #time{
+        width: 40px;
     }
 
     body, input, textarea, div, pre, i {

@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.view.RedirectView
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -43,11 +45,26 @@ class FeedController(
         return "ok"
     }
 
-    @GetMapping(value = ["/api/board/{boardId}/{aliasId}/{page}"])
+    @GetMapping(value = ["/api/board/{boardId}/{aliasId}/{direction:(?:forward|backward)}"])
+    fun sibling(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        @PathVariable("boardId") boardId: String,
+        @PathVariable("aliasId") aliasId: Int,
+        @PathVariable("direction") direction: String,
+    ): RedirectView {
+        val newId = (if (direction == "forward")
+            feedRepository.findForwardAliasIdByAliasIdAndBoardId(boardId, aliasId)
+        else
+            feedRepository.findBackwardAliasIdByAliasIdAndBoardId(boardId, aliasId))
+        return RedirectView("/api/board/" + boardId + "/" + newId + "/1")
+    }
+
+    @GetMapping(value = ["/api/board/{boardId}/{aliasId}/{page:[0-9+]}"])
+
     fun read(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        session: HttpSession,
         @PathVariable("boardId") boardId: String,
         @PathVariable("aliasId") aliasId: Int,
         @PathVariable("page") page: Int = 1
@@ -57,7 +74,9 @@ class FeedController(
 
         feed ?: return ""
 
-        val dateString = feed.createdAt.format(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm"))
+        val dateString = feed.createdAt.atZone(ZoneId.of("UTC")).withZoneSameInstant(
+            ZoneId.of("Asia/Seoul")
+        ).format(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm"))
 
         var result = ""
         var text = feed.text
@@ -151,3 +170,4 @@ class FeedController(
         return "ok"
     }
 }
+
