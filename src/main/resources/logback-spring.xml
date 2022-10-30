@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+<configuration>
+    <springProfile name="console-logging">
+        <include resource="logback/logback-console.xml"/>
+    </springProfile>
+    <springProfile name="file-logging">
+        <include resource="logback/logback-file.xml"/>
+    </springProfile>
+</configuration>

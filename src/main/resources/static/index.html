@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <title>01410.coroke.net</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff" as="font" type="font/woff2" crossorigin/>
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eight@1.0/Sam3KRFont.woff" as="font" type="font/woff2" crossorigin/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:site" content="@01410coroke"/>
+  <meta name="twitter:creator" content="@01410coroke"/>
+  <meta name="twitter:image" content="https://01410.coroke.net/ogimage.jpg"/>
+  <meta name="twitter:title" content="01410.coroke.net"/>
+  <meta property="og:image" content="https://01410.coroke.net/ogimage.jpg"/>
+  <meta property="og:title" content="01410.coroke.net"/>
+  <meta property="og:site_name" content="01410.coroke.net"/>
+  <meta property="og:type" content="website"/>
+  <link rel="apple-touch-icon" sizes="96x96" href="/favicon.png"/>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png"/>
+  <link rel="stylesheet" href="/index.css"/>
+</head>
+<body>
+  <div class="canvas">
+    <div>
+      <div id="screen">
+        <pre id="prescreen"></pre>
+        <div id="info"></div>
+        <div id="prompthead"></div>
+        <div class="command">
+          <div id="prompt">&nbsp; &nbsp;&nbsp;</div>
+          <input type="text" id="text" maxlength="30" autocorrect="off" autocapitalize="none">
+        </div>
+        <textarea id="textarea"></textarea>
+      </div>
+      <div class="status">
+        <span>
+          연결 <span id="session_time">0:00</span>
+        </span>
+        <span>
+          1-9600-N-8-1
+        </span>
+        <span id="time"></span>
+      </div>
+    </div>
+  </div>
+  <audio id="audio" src="/dialup.mp3"></audio>
+</body>
+<script src="/index.js"></script>
+</html>

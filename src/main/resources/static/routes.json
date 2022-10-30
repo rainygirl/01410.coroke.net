@@ -1,0 +1,38 @@
+{
+    "top": {
+        "type": "page",
+        "routes": {
+            "1": "plaza",
+            "2": "creative",
+            "3": "friend",
+            "98": "about",
+            "99": "notice"
+        },
+        "title": "01410.coroke.net"
+    },
+    "help": {
+        "type": "page",
+        "title": "도움말"
+    },
+    "about": {
+        "type": "page",
+        "title": "01410.coroke.net 소개"
+    },
+    "plaza": {
+        "type": "board",
+        "title": "자유게시판"
+    },
+    "creative": {
+        "type": "board",
+        "title": "창작연재"
+    },
+    "friend": {
+        "type": "board",
+        "title": "친구찾아요"
+    },
+    "notice": {
+        "type": "board",
+        "write_permissions": "admin",
+        "title": "공지사항"
+    }
+}

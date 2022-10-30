@@ -1,0 +1,225 @@
+@font-face {
+    font-family: 'DungGeunMo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sam3KRFont';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eight@1.0/Sam3KRFont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+:root {
+    --barbgcolor: #AAAAAA;
+    --barcolor: #000;
+    --bgcolor2: #171090;
+    --bgcolor: #070080;
+    --color: #fff;
+    --lineHeight: 1.2em;
+    --canvaswidth: 657px;
+    --width: 640px;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body, input, textarea, div, pre, i {
+    font-family: DungGeunMo, Sam3KRFont, Fixedsys;
+    font-size: 16px;
+}
+
+body, input, textarea {
+    background-color: var(--bgcolor);
+    color: var(--color);
+    line-height: var(--lineHeight);
+}
+
+input, textarea {
+    font-size: inherit;
+    border: 0;
+    -webkit-appearance: none;
+    margin: 0;
+    padding: 0;
+    height: var(--lineHeight);
+    line-height: var(--lineHeight);
+    background: none;
+    width: calc(100% - 40px);
+}
+
+textarea:focus,
+input:focus {
+    outline: none;
+}
+
+textarea {
+    height: auto;
+    min-height: 2.4em;
+    display: none;
+    resize: unset;
+}
+
+i {
+    font-family: Sam3KRFont;
+    font-style: normal;
+    transform: scaley(1.5);
+    display: inline-block;
+}
+
+b {
+    font-weight: normal;
+    background: var(--color);
+    color: var(--bgcolor);
+    outline: 1px solid var(--color);
+}
+
+#prescreen {
+    margin: 0;
+    padding: 0;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+.command {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0;
+}
+
+.command div {
+    white-space: nowrap;
+}
+
+.status {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: right;
+    width: var(--width);
+    line-height: 18px;
+    height: 18px;
+    background: var(--barbgcolor);
+    color: var(--barcolor);
+    overflow: hidden;
+}
+
+.status > span {
+    float: left;
+    text-align: left;
+    margin: 0;
+    padding: 0 16px;
+    position: relative;
+}
+
+.status > span:before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 18px;
+    top: 0;
+    right: -1px;
+    border-left: 1px solid #000;
+    background: #fff;
+}
+
+.status > span#mode_draw {
+    margin-left: 0;
+}
+
+.status > span.pos {
+    float: right;
+    text-align: right;
+    margin: 0;
+}
+
+.canvas {
+    position: absolute;
+    width: 100%;
+    min-width: var(--canvaswidth);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.canvas > div {
+    position: relative;
+    width: var(--canvaswidth);
+    height: 483px;
+}
+
+#screen {
+    width: var(--canvaswidth);
+    height: 465px;
+    overflow: scroll;
+    padding-bottom: 36px;
+    box-sizing: border-box;
+}
+
+#time {
+    float: right;
+    width: 66px;
+}
+
+#time:before {
+    left: 0;
+    right: auto;
+}
+
+audio {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+@media all and (max-width: 640px) {
+    .canvas {
+        width: 400px;
+        align-items: start;
+        height: 312px;
+        height: 100 svh;
+        display: block;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    .canvas > div {
+        width: 400px;
+        height: 312px;
+    }
+
+    #screen {
+        width: 400px;
+        height: 300px;
+        padding-bottom: 24px;
+    }
+
+    .status {
+        height: 12px;
+        line-height: 12px;
+    }
+
+    body, input, textarea, div, pre, i {
+        font-size: 10px;
+    }
+
+    html, body {
+        overflow: hidden;
+    }
+}
