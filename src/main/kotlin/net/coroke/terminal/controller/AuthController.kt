@@ -18,9 +18,7 @@ import javax.servlet.http.HttpSession
 class AuthController(private val authService: AuthService) {
 
     @GetMapping("/login")
-    fun oAuth2Login(): RedirectView {
-        return RedirectView("/")
-    }
+    fun oAuth2Login() = RedirectView("/")
 
     @GetMapping("/login/oauth2/callback")
     fun oAuth2LoginCallback(@AuthenticationPrincipal oAuth2User: OAuth2User, session: HttpSession): RedirectView {
