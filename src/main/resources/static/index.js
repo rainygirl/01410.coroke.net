@@ -3,9 +3,10 @@
         currentUser = {},
         allRouter = {},
         currentRouter = {},
-        currentPage = 1,
+        currentListPage = 1,
         currentTotalPage = 0,
         currentFeedId = 0,
+        currentFeedPage = 0,
         currentMode = '',
         sessionTimer = 0,
         previousKey = '',
@@ -47,7 +48,7 @@
         },
         renderTitle = (title) => {
             const titlePadding = ' '.repeat(Math.ceil((60 - length2bytes(title)) / 2)),
-                paging = currentRouter.type === 'board' ? (currentPage + '/' + currentTotalPage).padStart(10, ' ') : "";
+                paging = currentRouter.type === 'board' ? ((currentFeedId === 0 ? currentListPage : currentFeedPage) + '/' + currentTotalPage).padStart(10, ' ') : "";
             return '<b>coroke</b>  <i>' + '─'.repeat(36) + '</i><br />' +
                 (pwd !== 'top' ? pwd.toUpperCase().padEnd(10, ' ') : ' '.repeat(10)) + titlePadding + title + titlePadding + paging + '<br />' +
                 '<i>' + fullLine + '</i><br />';
@@ -108,7 +109,7 @@
                             await fetch('/api/board/' + newpwd + '/' + page).then(resp => resp.text()).then(d => {
                                 const paging = d.split('|[PAGE:')[1].split(']')[0].split('/');
                                 currentTotalPage = parseInt(paging[1]);
-                                currentPage = parseInt(page);
+                                currentListPage = parseInt(page);
                                 pwd = newpwd;
                                 currentRouter = allRouter[pwd];
                                 currentFeedId = 0;
@@ -124,7 +125,7 @@
                             } catch (x) {
                                 currentTotalPage = 0
                             }
-                            currentPage = page;
+                            currentFeedPage = page;
                             currentFeedId = parseInt(feedid);
                             currentRouter = allRouter[pwd];
                             pushState('/' + pwd + '/' + feedid)
@@ -178,7 +179,7 @@
                                                 });
                                                 break;
                                             case 'board':
-                                                currentPage = 1;
+                                                currentListPage = 1;
                                                 await loadBoard(newpwd, 1);
                                                 break;
                                         }
@@ -366,7 +367,7 @@
                                                 else if (['c', 'ㅊ'].includes(value)) value = 'go help';
                                                 else if (['p', 'm', 'ㅔ', 'ㅡ'].includes(value)) {
                                                     if (currentFeedId) {
-                                                        await loadBoard(pwd, currentPage);
+                                                        await loadBoard(pwd, currentListPage);
                                                         return;
                                                     } else
                                                         value = 'go ' + (currentRouter.parent || 'top');
@@ -382,20 +383,19 @@
                                                     })
                                                     return;
                                                 } else if (currentRouter.type === 'board' && currentFeedId === 0 && ['', 'f', 'ㄹ'].includes(value) && !isEOF) {
-                                                    return await loadBoard(pwd, currentPage + 1)
-                                                } else if (currentRouter.type === 'board' && currentFeedId === 0 && ['b', 'ㅠ'].includes(value) && currentPage > 1) {
-                                                    return await loadBoard(pwd, currentPage - 1)
+                                                    return await loadBoard(pwd, currentListPage + 1)
+                                                } else if (currentRouter.type === 'board' && currentFeedId === 0 && ['b', 'ㅠ'].includes(value) && currentListPage > 1) {
+                                                    return await loadBoard(pwd, currentListPage - 1)
                                                 } else if (currentFeedId > 0 && ['a', 'ㅁ'].includes(value)) {
                                                     return await loadSiblingFeed(currentFeedId, 'forward')
                                                 } else if (currentFeedId > 1 && ['n', 'ㅜ'].includes(value)) {
                                                     return await loadSiblingFeed(currentFeedId, 'backward')
                                                 } else if (currentFeedId > 0 && ['', 'f', 'ㄹ'].includes(value) && !isEOF) {
-                                                    return await loadFeed(currentFeedId, currentPage + 1)
-                                                } else if (currentFeedId > 0 && ['b', 'ㅠ'].includes(value) && currentPage > 1) {
-                                                    return await loadFeed(currentFeedId, currentPage - 1)
+                                                    return await loadFeed(currentFeedId, currentFeedPage + 1)
+                                                } else if (currentFeedId > 0 && ['b', 'ㅠ'].includes(value) && currentFeedPage > 1) {
+                                                    return await loadFeed(currentFeedId, currentFeedPage - 1)
                                                 } else if (currentRouter.type === 'board' && !currentFeedId && !isNaN(parseInt(value))) {
-                                                    currentPage = 1;
-                                                    await loadFeed(value)
+                                                    await loadFeed(value, 1)
                                                     return;
                                                 } else if (value === 'set nickname') {
                                                     chooseNickname(false, ovalue);
