@@ -18,9 +18,8 @@ class AuthService(
     private val userRepository: UserRepository
 ) {
 
-    fun isAuthenticated(session: HttpSession?): Boolean {
-        return (session?.getAttribute("user") != null)
-    }
+    fun isAuthenticated(session: HttpSession?) =
+        session?.getAttribute("user") != null
 
     fun getCurrentUserFromSession(session: HttpSession?): ReadUserDto? {
         if (!isAuthenticated(session)) return null
