@@ -20,9 +20,8 @@ class TwitterController(
     private val twitterService: TwitterService
 ) {
     @GetMapping(value = ["\${twitter.authorization-uri}"])
-    fun twitterAuthorize(request: HttpServletRequest, response: HttpServletResponse) {
+    fun twitterAuthorize(request: HttpServletRequest, response: HttpServletResponse) =
         response.sendRedirect(twitterService.getAuthenticationUrl(request))
-    }
 
     @GetMapping(value = ["\${twitter.callback-uri}"])
     fun twitterComplete(
