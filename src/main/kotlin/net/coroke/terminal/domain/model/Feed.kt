@@ -4,7 +4,14 @@ import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.EntityListeners
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.MappedSuperclass
+import javax.persistence.OneToOne
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
@@ -19,7 +26,6 @@ abstract class BaseTimeEntity {
     var updatedAt: LocalDateTime = LocalDateTime.now()
         protected set
 }
-
 
 @Entity
 @EntityListeners(AuditingEntityListener::class)
@@ -40,6 +46,4 @@ data class Feed(
     var createdAgent: String,
 
     var hit: Int
-) : BaseTimeEntity() {
-}
-
+) : BaseTimeEntity()

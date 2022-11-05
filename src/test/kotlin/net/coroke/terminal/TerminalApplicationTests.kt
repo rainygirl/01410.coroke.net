@@ -9,5 +9,4 @@ class TerminalApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

@@ -26,8 +26,8 @@ class TwitterService {
     fun getAuthenticationUrl(request: HttpServletRequest): String {
         val operations: OAuth1Operations = TwitterConnectionFactory(clientId, clientSecret).getOAuthOperations()
         val scheme = request.getHeader("X-Forwarded-Proto")
-        val urlprefix = (scheme ?: request.scheme) + "://" + request.getHeader(HttpHeaders.HOST);
-        val callbackURL = urlprefix + callbackUri
+        val urlPrefix = (scheme ?: request.scheme) + "://" + request.getHeader(HttpHeaders.HOST)
+        val callbackURL = urlPrefix + callbackUri
         val oAuthToken: OAuthToken = operations.fetchRequestToken(callbackURL, null)
 
         request.servletContext.setAttribute("token", oAuthToken)
@@ -48,7 +48,6 @@ class TwitterService {
 
         request.servletContext.removeAttribute("token")
         return twitterConnectionFactory.createConnection(accessToken)
-
     }
 
     fun getUserProfileMap(connection: Connection<Twitter>): MutableMap<String, String> {
@@ -63,6 +62,5 @@ class TwitterService {
         map["uid"] = connection.key.providerUserId
 
         return map
-
     }
 }

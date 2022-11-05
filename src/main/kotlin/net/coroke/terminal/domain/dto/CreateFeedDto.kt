@@ -30,9 +30,5 @@ data class CreateFeedDto(
             text = text,
             hit = 0,
         )
-
     }
 }
-
-
-

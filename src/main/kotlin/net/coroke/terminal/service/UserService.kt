@@ -27,7 +27,7 @@ class UserService(
     }
 
     @Transactional
-    private fun getUniqueUsername(originName: String): String {
+    fun getUniqueUsername(originName: String): String {
         var username: String = originName
         var index = 0
         while (userRepository.existsByUsername(username)) {
@@ -36,5 +36,4 @@ class UserService(
         }
         return username
     }
-
 }

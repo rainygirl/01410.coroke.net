@@ -10,7 +10,7 @@ import net.coroke.terminal.service.Utils
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.bind.annotation.*
+
 import org.springframework.web.servlet.view.RedirectView
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -18,6 +18,12 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
 import kotlin.math.ceil
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class FeedController(
@@ -25,7 +31,6 @@ class FeedController(
     private val feedService: FeedService,
     private val authService: AuthService,
 ) {
-
 
     @GetMapping(value = ["/api/board/{boardId}/{aliasId}/hit"])
     @Transactional
@@ -36,7 +41,7 @@ class FeedController(
         @PathVariable("boardId") boardId: String,
         @PathVariable("aliasId") aliasId: Int
     ): String {
-        val sessionKey = "hit." + (boardId ?: "") + "." + (aliasId ?: "")
+        val sessionKey = "hit.$boardId.$aliasId"
         if (session.getAttribute(sessionKey) == 1) return "ok"
 
         feedRepository.hitFeedByBoardIdAndAliasId(boardId, aliasId)
@@ -53,10 +58,12 @@ class FeedController(
         @PathVariable("aliasId") aliasId: Int,
         @PathVariable("direction") direction: String,
     ): RedirectView {
-        val newId = (if (direction == "forward")
-            feedRepository.findForwardAliasIdByAliasIdAndBoardId(boardId, aliasId)
-        else
-            feedRepository.findBackwardAliasIdByAliasIdAndBoardId(boardId, aliasId))
+        val newId = (
+            if (direction == "forward")
+                feedRepository.findForwardAliasIdByAliasIdAndBoardId(boardId, aliasId)
+            else
+                feedRepository.findBackwardAliasIdByAliasIdAndBoardId(boardId, aliasId)
+            )
         return RedirectView("/api/board/" + boardId + "/" + newId + "/1")
     }
 
@@ -95,9 +102,21 @@ class FeedController(
 
         text = text.split("\n").slice(startLine..endLine).joinToString(separator = "\n").replace("<", "&lt;")
 
-        result += "제  목:" + feed.title + "\n올린이:" + feed.name + "   " + dateString + "   분량:" + totalPage + "페이지   읽음:" + feed.hit + "\n" + "-".repeat(
-            79
-        ) + "\n" + text + "\n"
+        result += "제  목:" +
+            feed.title +
+            "\n올린이:" +
+            feed.name +
+            "   " +
+            dateString +
+            "   분량:" +
+            totalPage +
+            "페이지   읽음:" +
+            feed.hit +
+            "\n" +
+            "-".repeat(79) +
+            "\n" +
+            text +
+            "\n"
 
         return result
     }
@@ -112,7 +131,7 @@ class FeedController(
     ): String {
         val size = 12
         val feeds = feedRepository.findAllByBoardIdOrderByIdDesc(PageRequest.of(page - 1, size), boardId)
-        var result = " 번 호 이용자명  날 짜 읽음      제      목\n" + "─".repeat(40) + "\n";
+        var result = " 번 호 이용자명  날 짜 읽음      제      목\n" + "─".repeat(40) + "\n"
         feeds?.forEach { feed ->
             feed ?: return ""
 
@@ -146,28 +165,28 @@ class FeedController(
         val routers = Utils.getRouters()
         if (!routers.keys.contains(boardId) ||
             routers.get(boardId)?.get("type") != "board"
-        )
-            throw ResourceNotFoundException();
+        ) {
+            throw HttpController()
+        }
 
         val createdUser: User? = authService.getCurrentUser(request)
 
-        createdUser ?: throw ResourceNotFoundException();
+        createdUser ?: throw HttpController()
 
         feedDto.createdUser = createdUser
 
-        if (routers.get(boardId)?.get("write_permissions") == "admin"
-            && createdUser?.role != UserRole.ROLE_ADMIN
+        if (routers[boardId]?.get("write_permissions") == "admin" &&
+            createdUser.role != UserRole.ROLE_ADMIN
         )
-            throw ResourceNotFoundException();
+            throw HttpController()
 
         feedDto.boardId = boardId
         feedDto.createdIp = request.remoteAddr
         feedDto.createdAgent = userAgent
-        feedDto.name = createdUser?.nickname ?: ""
+        feedDto.name = createdUser.nickname ?: ""
 
         feedService.createFeed(feedDto)
 
         return "ok"
     }
 }
-

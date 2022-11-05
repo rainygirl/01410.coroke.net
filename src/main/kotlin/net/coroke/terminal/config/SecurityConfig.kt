@@ -34,7 +34,4 @@ class SecurityConfig {
             .csrf().disable()
         return http.build()
     }
-
 }
-
-

@@ -26,5 +26,4 @@ object Utils {
         val jsonString = HomeController::class.java.getResource("/static/routes.json")?.readText()
         return Gson().fromJson(jsonString, object : TypeToken<Map<String, Map<String, Any>>>() {}.type)
     }
-
 }

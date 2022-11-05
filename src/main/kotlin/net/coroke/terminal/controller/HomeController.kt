@@ -11,8 +11,7 @@ class HomeController {
     @RequestMapping(value = ["/{pwd:[a-z]+}/{id:[0-9]+}", "/{pwd:[a-z]+}"])
     fun pwd(@PathVariable pwd: String, @PathVariable id: Int?): String {
         val routers = Utils.getRouters()
-        if (!routers.keys.contains(pwd)) throw ResourceNotFoundException()
+        if (!routers.keys.contains(pwd)) throw HttpController()
         return "/index.html"
     }
-
 }

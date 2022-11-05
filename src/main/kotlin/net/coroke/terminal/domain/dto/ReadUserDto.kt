@@ -11,4 +11,4 @@ data class ReadUserDto(
     var picture: String,
     @Enumerated(EnumType.STRING)
     var role: UserRole
-) {}
+)
