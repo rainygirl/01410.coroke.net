@@ -1,13 +1,17 @@
 package net.coroke.terminal.domain.model
 
+import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 import net.coroke.terminal.domain.dto.CreateUserDto
 import net.coroke.terminal.domain.dto.ReadUserDto
-import javax.persistence.*
-
 
 @Entity
 data class User(
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     var id: Long = 0,
     var origin: String,
     var uid: String,

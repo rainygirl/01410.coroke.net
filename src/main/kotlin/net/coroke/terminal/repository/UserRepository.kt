@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 
-
 interface UserRepository : JpaRepository<User, Long> {
 
     fun findByUsername(username: String): User?
@@ -17,5 +16,4 @@ interface UserRepository : JpaRepository<User, Long> {
     @Modifying(clearAutomatically = true)
     @Query("UPDATE User SET nickname = :nickname WHERE id= :id")
     fun updateNickname(id: Long, nickname: String)
-
 }

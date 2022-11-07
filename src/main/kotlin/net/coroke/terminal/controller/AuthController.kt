@@ -31,7 +31,7 @@ class AuthController(private val authService: AuthService) {
 
     @RequestMapping(path = ["/logout"], method = [RequestMethod.GET, RequestMethod.POST])
     fun logout(response: HttpServletResponse, session: HttpSession): String {
-        val cookie = Cookie("SESSION", null);
+        val cookie = Cookie("SESSION", null)
         cookie.setMaxAge(0)
         cookie.setPath("/")
         response.addCookie(cookie)
@@ -39,5 +39,4 @@ class AuthController(private val authService: AuthService) {
         session.setAttribute("user", null)
         return "ok"
     }
-
 }

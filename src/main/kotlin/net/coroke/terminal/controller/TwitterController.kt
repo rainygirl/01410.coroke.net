@@ -34,7 +34,7 @@ class TwitterController(
         val connection: Connection<Twitter> = twitterService.getAccessTokenToConnection(request, oauthVerifier)
 
         val user: ReadUserDto = authService.oAuth1Login(twitterService.getUserProfileMap(connection))
-        val gj = Gson().toJson(user);
+        val gj = Gson().toJson(user)
 
         session.setAttribute("user", gj)
 

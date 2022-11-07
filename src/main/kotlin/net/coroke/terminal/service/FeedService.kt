@@ -21,6 +21,4 @@ class FeedService(
         feedRepository.save(feed.toEntity())
         return feed
     }
-
-
 }
